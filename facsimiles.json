@@ -1,0 +1,402 @@
+{
+  "y01": [
+    {
+      "edition": "衍庆堂本",
+      "file": "pdf/y01-enkei.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "附005-0006",
+      "source_file": "NAJDA-附005-0006_喩世明言2.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:NAJDA-%E9%99%84005-0006_%E5%96%A9%E4%B8%96%E6%98%8E%E8%A8%802.pdf",
+      "scan_pages": [
+        58,
+        104
+      ],
+      "pages": 47,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "National Archives of Japan",
+      "notes": [
+        "边界图像裁去相邻篇的半叶。"
+      ]
+    },
+    {
+      "edition": "天许斋本",
+      "file": "pdf/y01-tianxu.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "",
+      "source_file": "CADAL06200803_古本小說集成：古今小說·上.djvu",
+      "source": "https://commons.wikimedia.org/wiki/File:CADAL06200803_%E5%8F%A4%E6%9C%AC%E5%B0%8F%E8%AA%AA%E9%9B%86%E6%88%90%EF%BC%9A%E5%8F%A4%E4%BB%8A%E5%B0%8F%E8%AA%AA%C2%B7%E4%B8%8A.djvu",
+      "scan_pages": [
+        23,
+        113
+      ],
+      "pages": 91,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Zhejiang University",
+      "notes": []
+    }
+  ],
+  "y04": [
+    {
+      "edition": "衍庆堂本",
+      "file": "pdf/y04-enkei.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "附005-0006",
+      "source_file": "NAJDA-附005-0006_喩世明言3.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:NAJDA-%E9%99%84005-0006_%E5%96%A9%E4%B8%96%E6%98%8E%E8%A8%803.pdf",
+      "scan_pages": [
+        47,
+        66
+      ],
+      "pages": 20,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "National Archives of Japan",
+      "notes": [
+        "边界图像裁去相邻篇的半叶。"
+      ]
+    },
+    {
+      "edition": "天许斋本",
+      "file": "pdf/y04-tianxu.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "",
+      "source_file": "CADAL06200803_古本小說集成：古今小說·上.djvu",
+      "source": "https://commons.wikimedia.org/wiki/File:CADAL06200803_%E5%8F%A4%E6%9C%AC%E5%B0%8F%E8%AA%AA%E9%9B%86%E6%88%90%EF%BC%9A%E5%8F%A4%E4%BB%8A%E5%B0%8F%E8%AA%AA%C2%B7%E4%B8%8A.djvu",
+      "scan_pages": [
+        223,
+        260
+      ],
+      "pages": 38,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Zhejiang University",
+      "notes": []
+    }
+  ],
+  "y24": [
+    {
+      "edition": "天许斋本",
+      "file": "pdf/y24-tianxu.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "",
+      "source_file": "CADAL06200804_古本小說集成：古今小說·中.djvu",
+      "source": "https://commons.wikimedia.org/wiki/File:CADAL06200804_%E5%8F%A4%E6%9C%AC%E5%B0%8F%E8%AA%AA%E9%9B%86%E6%88%90%EF%BC%9A%E5%8F%A4%E4%BB%8A%E5%B0%8F%E8%AA%AA%C2%B7%E4%B8%AD.djvu",
+      "scan_pages": [
+        405,
+        446
+      ],
+      "pages": 42,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Zhejiang University",
+      "notes": []
+    }
+  ],
+  "y27": [
+    {
+      "edition": "天许斋本",
+      "file": "pdf/y27-tianxu.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "",
+      "source_file": "CADAL06200804_古本小說集成：古今小說·中.djvu",
+      "source": "https://commons.wikimedia.org/wiki/File:CADAL06200804_%E5%8F%A4%E6%9C%AC%E5%B0%8F%E8%AA%AA%E9%9B%86%E6%88%90%EF%BC%9A%E5%8F%A4%E4%BB%8A%E5%B0%8F%E8%AA%AA%C2%B7%E4%B8%AD.djvu",
+      "scan_pages": [
+        503,
+        531
+      ],
+      "pages": 29,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Zhejiang University",
+      "notes": []
+    }
+  ],
+  "y29": [
+    {
+      "edition": "天许斋本",
+      "file": "pdf/y29-tianxu.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "",
+      "source_file": "CADAL06200805_古本小說集成：古今小說·下.djvu",
+      "source": "https://commons.wikimedia.org/wiki/File:CADAL06200805_%E5%8F%A4%E6%9C%AC%E5%B0%8F%E8%AA%AA%E9%9B%86%E6%88%90%EF%BC%9A%E5%8F%A4%E4%BB%8A%E5%B0%8F%E8%AA%AA%C2%B7%E4%B8%8B.djvu",
+      "scan_pages": [
+        5,
+        39
+      ],
+      "pages": 35,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Zhejiang University",
+      "notes": []
+    }
+  ],
+  "j01": [
+    {
+      "edition": "兼善堂本",
+      "file": "pdf/j01-jianshan.pdf",
+      "holding": "《古本小说集成》影本（CADAL）",
+      "shelfmark": "",
+      "source_file": "CADAL06200418_古本小說集成：警世通言·上.djvu",
+      "source": "https://commons.wikimedia.org/wiki/File:CADAL06200418_%E5%8F%A4%E6%9C%AC%E5%B0%8F%E8%AA%AA%E9%9B%86%E6%88%90%EF%BC%9A%E8%AD%A6%E4%B8%96%E9%80%9A%E8%A8%80%C2%B7%E4%B8%8A.djvu",
+      "scan_pages": [
+        30,
+        60
+      ],
+      "pages": 31,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Zhejiang University",
+      "notes": []
+    },
+    {
+      "edition": "早稻田藏本",
+      "file": "pdf/j01-waseda.pdf",
+      "holding": "早稻田大学图书馆",
+      "shelfmark": "ヘ21 04250",
+      "source_file": "WUL-he21_04250_警世通言_01.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:WUL-he21_04250_%E8%AD%A6%E4%B8%96%E9%80%9A%E8%A8%80_01.pdf",
+      "scan_pages": [
+        54,
+        69
+      ],
+      "pages": 16,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Waseda University Library",
+      "notes": []
+    }
+  ],
+  "j02": [
+    {
+      "edition": "兼善堂本",
+      "file": "pdf/j02-jianshan.pdf",
+      "holding": "《古本小说集成》影本（CADAL）",
+      "shelfmark": "",
+      "source_file": "CADAL06200418_古本小說集成：警世通言·上.djvu",
+      "source": "https://commons.wikimedia.org/wiki/File:CADAL06200418_%E5%8F%A4%E6%9C%AC%E5%B0%8F%E8%AA%AA%E9%9B%86%E6%88%90%EF%BC%9A%E8%AD%A6%E4%B8%96%E9%80%9A%E8%A8%80%C2%B7%E4%B8%8A.djvu",
+      "scan_pages": [
+        64,
+        90
+      ],
+      "pages": 27,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Zhejiang University",
+      "notes": []
+    },
+    {
+      "edition": "早稻田藏本",
+      "file": "pdf/j02-waseda.pdf",
+      "holding": "早稻田大学图书馆",
+      "shelfmark": "ヘ21 04250",
+      "source_file": "WUL-he21_04250_警世通言_01.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:WUL-he21_04250_%E8%AD%A6%E4%B8%96%E9%80%9A%E8%A8%80_01.pdf",
+      "scan_pages": [
+        70,
+        83
+      ],
+      "pages": 14,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Waseda University Library",
+      "notes": []
+    }
+  ],
+  "j28": [
+    {
+      "edition": "兼善堂本",
+      "file": "pdf/j28-jianshan.pdf",
+      "holding": "《古本小说集成》影本（CADAL）",
+      "shelfmark": "",
+      "source_file": "CADAL06200419_古本小說集成：警世通言·中.djvu",
+      "source": "https://commons.wikimedia.org/wiki/File:CADAL06200419_%E5%8F%A4%E6%9C%AC%E5%B0%8F%E8%AA%AA%E9%9B%86%E6%88%90%EF%BC%9A%E8%AD%A6%E4%B8%96%E9%80%9A%E8%A8%80%C2%B7%E4%B8%AD.djvu",
+      "scan_pages": [
+        541,
+        618
+      ],
+      "pages": 78,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Zhejiang University",
+      "notes": []
+    },
+    {
+      "edition": "早稻田藏本",
+      "file": "pdf/j28-waseda.pdf",
+      "holding": "早稻田大学图书馆",
+      "shelfmark": "ヘ21 04250",
+      "source_file": "WUL-he21_04250_警世通言_07.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:WUL-he21_04250_%E8%AD%A6%E4%B8%96%E9%80%9A%E8%A8%80_07.pdf",
+      "scan_pages": [
+        60,
+        99
+      ],
+      "pages": 40,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Waseda University Library",
+      "notes": [
+        "边界图像裁去相邻篇的半叶。"
+      ]
+    }
+  ],
+  "j32": [
+    {
+      "edition": "兼善堂本",
+      "file": "pdf/j32-jianshan.pdf",
+      "holding": "《古本小说集成》影本（CADAL）",
+      "shelfmark": "",
+      "source_file": "CADAL06200420_古本小說集成：警世通言·下.djvu",
+      "source": "https://commons.wikimedia.org/wiki/File:CADAL06200420_%E5%8F%A4%E6%9C%AC%E5%B0%8F%E8%AA%AA%E9%9B%86%E6%88%90%EF%BC%9A%E8%AD%A6%E4%B8%96%E9%80%9A%E8%A8%80%C2%B7%E4%B8%8B.djvu",
+      "scan_pages": [
+        101,
+        144
+      ],
+      "pages": 44,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Zhejiang University",
+      "notes": []
+    },
+    {
+      "edition": "早稻田藏本",
+      "file": "pdf/j32-waseda.pdf",
+      "holding": "早稻田大学图书馆",
+      "shelfmark": "ヘ21 04250",
+      "source_file": "WUL-he21_04250_警世通言_08.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:WUL-he21_04250_%E8%AD%A6%E4%B8%96%E9%80%9A%E8%A8%80_08.pdf",
+      "scan_pages": [
+        48,
+        70
+      ],
+      "pages": 23,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Waseda University Library",
+      "notes": [
+        "边界图像裁去相邻篇的半叶。"
+      ]
+    }
+  ],
+  "j35": [
+    {
+      "edition": "兼善堂本",
+      "file": "pdf/j35-jianshan.pdf",
+      "holding": "《古本小说集成》影本（CADAL）",
+      "shelfmark": "",
+      "source_file": "CADAL06200420_古本小說集成：警世通言·下.djvu",
+      "source": "https://commons.wikimedia.org/wiki/File:CADAL06200420_%E5%8F%A4%E6%9C%AC%E5%B0%8F%E8%AA%AA%E9%9B%86%E6%88%90%EF%BC%9A%E8%AD%A6%E4%B8%96%E9%80%9A%E8%A8%80%C2%B7%E4%B8%8B.djvu",
+      "scan_pages": [
+        241,
+        275
+      ],
+      "pages": 35,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Zhejiang University",
+      "notes": [
+        "此本对应卷三十四。"
+      ]
+    },
+    {
+      "edition": "早稻田藏本",
+      "file": "pdf/j35-waseda.pdf",
+      "holding": "早稻田大学图书馆",
+      "shelfmark": "ヘ21 04250",
+      "source_file": "WUL-he21_04250_警世通言_09.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:WUL-he21_04250_%E8%AD%A6%E4%B8%96%E9%80%9A%E8%A8%80_09.pdf",
+      "scan_pages": [
+        28,
+        45
+      ],
+      "pages": 18,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "Waseda University Library",
+      "notes": [
+        "边界图像裁去相邻篇的半叶。"
+      ]
+    }
+  ],
+  "x01": [
+    {
+      "edition": "叶敬池本",
+      "file": "pdf/x01-ye.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "附005-0005",
+      "source_file": "NAJDA-附005-0005_醒世恒言1.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:NAJDA-%E9%99%84005-0005_%E9%86%92%E4%B8%96%E6%81%92%E8%A8%801.pdf",
+      "scan_pages": [
+        48,
+        67
+      ],
+      "pages": 20,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "National Archives of Japan",
+      "notes": []
+    }
+  ],
+  "x03": [
+    {
+      "edition": "叶敬池本",
+      "file": "pdf/x03-ye.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "附005-0005",
+      "source_file": "NAJDA-附005-0005_醒世恒言2.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:NAJDA-%E9%99%84005-0005_%E9%86%92%E4%B8%96%E6%81%92%E8%A8%802.pdf",
+      "scan_pages": [
+        2,
+        56
+      ],
+      "pages": 55,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "National Archives of Japan",
+      "notes": [
+        "边界图像裁去相邻篇的半叶。"
+      ]
+    }
+  ],
+  "x08": [
+    {
+      "edition": "叶敬池本",
+      "file": "pdf/x08-ye.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "附005-0005",
+      "source_file": "NAJDA-附005-0005_醒世恒言4.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:NAJDA-%E9%99%84005-0005_%E9%86%92%E4%B8%96%E6%81%92%E8%A8%804.pdf",
+      "scan_pages": [
+        2,
+        36
+      ],
+      "pages": 35,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "National Archives of Japan",
+      "notes": [
+        "边界图像裁去相邻篇的半叶。"
+      ]
+    }
+  ],
+  "x18": [
+    {
+      "edition": "叶敬池本",
+      "file": "pdf/x18-ye.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "附005-0005",
+      "source_file": "NAJDA-附005-0005_醒世恒言7.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:NAJDA-%E9%99%84005-0005_%E9%86%92%E4%B8%96%E6%81%92%E8%A8%807.pdf",
+      "scan_pages": [
+        37,
+        66
+      ],
+      "pages": 30,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "National Archives of Japan",
+      "notes": [
+        "边界图像裁去相邻篇的半叶。"
+      ]
+    }
+  ],
+  "x36": [
+    {
+      "edition": "叶敬池本",
+      "file": "pdf/x36-ye.pdf",
+      "holding": "日本国立公文书馆内阁文库",
+      "shelfmark": "附005-0005",
+      "source_file": "NAJDA-附005-0005_醒世恒言15.pdf",
+      "source": "https://commons.wikimedia.org/wiki/File:NAJDA-%E9%99%84005-0005_%E9%86%92%E4%B8%96%E6%81%92%E8%A8%8015.pdf",
+      "scan_pages": [
+        2,
+        37
+      ],
+      "pages": 36,
+      "rights": "Public domain (Wikimedia Commons)",
+      "credit": "National Archives of Japan",
+      "notes": []
+    }
+  ]
+}

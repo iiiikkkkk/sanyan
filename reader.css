@@ -1,0 +1,10 @@
+.facsimile-dialog{width:min(96vw,1500px);max-width:96vw;height:91vh;max-height:91vh;box-sizing:border-box;background:#fffaf0;color:#30291f;border:1px solid #c9bda8;padding:12px}
+.facsimile-dialog::backdrop{background:#30291f99}
+.facsimile-panes{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:12px}
+.facsimile-panes section{min-width:0;text-align:center}
+.facsimile-panes canvas{max-width:100%;height:auto;vertical-align:top}
+.pdf-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;padding:8px}
+.pdf-controls input[type=number]{width:5ch}
+.pdf-controls select,.pdf-controls button,.pdf-controls input{font:inherit}
+.facsimile-dialog [role=status]:empty{display:none}
+@media(max-width:650px){.facsimile-panes{grid-auto-flow:row;grid-auto-columns:auto}}
