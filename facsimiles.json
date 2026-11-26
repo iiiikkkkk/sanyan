@@ -227,12 +227,14 @@
       "source": "https://commons.wikimedia.org/wiki/File:NAJDA-%E9%99%84005-0005_%E9%86%92%E4%B8%96%E6%81%92%E8%A8%801.pdf",
       "scan_pages": [
         48,
-        67
+        70
       ],
-      "pages": 20,
+      "pages": 23,
       "rights": "Public domain (Wikimedia Commons)",
       "credit": "National Archives of Japan",
-      "notes": []
+      "notes": [
+        "边界图像裁去相邻篇的半叶。"
+      ]
     }
   ],
   "x03": [
