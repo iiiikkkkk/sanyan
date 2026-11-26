@@ -168,65 +168,85 @@ function showContents(books, active) {
   if (matchMedia('(max-width: 900px)').matches) document.querySelector('#contents').open = false
 }
 
-function showIllustrations(story) {
-  const panel = document.querySelector('#illustrations')
+function getIllustrationEditions(story) {
+  const editions = new Map()
+  for (const plate of story.querySelectorAll('.gallery .plate')) {
+    const picture = plate.querySelector('img')
+    const file = picture?.getAttribute('src')
+    if (!file || !/^plate-[a-f0-9]+\.jpg$/.test(file)) continue
+    const title = plate.querySelector('h3')?.textContent.trim() || picture.alt
+    const edition = title.split(' · ', 1)[0] || '刊本未标注'
+    if (!editions.has(edition)) editions.set(edition, [])
+    editions.get(edition).push({ file, title, credit: plate.querySelector('small')?.textContent.trim() })
+  }
+  return editions
+}
+
+function createIllustrationPane(container, editions, side) {
+  const panel = document.querySelector('#illustration-pane').content.firstElementChild.cloneNode(true)
+  container.append(panel)
+  panel.setAttribute('aria-label', `${side}插图`)
+  const select = panel.querySelector('select')
+  select.setAttribute('aria-label', `${side}插图刊本`)
   const image = panel.querySelector('figure img')
   const caption = panel.querySelector('figcaption')
   const strip = panel.querySelector('.illustration-strip')
-  const enlarge = panel.querySelector('#enlarge-illustration')
+  const enlarge = panel.querySelector('.enlarge-illustration')
+  enlarge.setAttribute('aria-label', `放大${side}插图`)
   const dialog = document.querySelector('.illustration-dialog')
   const enlarged = dialog.querySelector('img')
-  const plates = [...story.querySelectorAll('.gallery .plate')].flatMap(plate => {
-    const picture = plate.querySelector('img')
-    const file = picture?.getAttribute('src')
-    if (!file || !/^plate-[a-f0-9]+\.jpg$/.test(file)) return []
-    return [{
-      file,
-      title: plate.querySelector('h3')?.textContent.trim() || picture.alt,
-      credit: plate.querySelector('small')?.textContent.trim()
-    }]
-  })
-  const thumbnails = plates.map(({ file, title }) => {
-    const button = document.createElement('button')
-    button.type = 'button'
-    button.title = title
-    button.setAttribute('aria-label', title)
-    const thumbnail = new Image()
-    thumbnail.alt = ''
-    thumbnail.loading = 'lazy'
-    thumbnail.src = file
-    button.append(thumbnail)
-    strip.append(button)
-    return button
-  })
+  for (const name of editions.keys()) select.add(new Option(name, name))
 
-  function selectPlate(index) {
-    const { file, title, credit } = plates[index]
-    image.src = file
-    image.alt = title
-    image.hidden = false
-    caption.textContent = title
-    if (credit) {
-      const source = document.createElement('small')
-      source.textContent = credit
-      caption.append(source)
-    }
-    thumbnails.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)))
+  if (!editions.size) {
+    panel.querySelector('.empty-illustrations').hidden = false
+    select.disabled = true
+    enlarge.hidden = true
+    strip.hidden = true
+    return
   }
 
-  thumbnails.forEach((button, index) => button.addEventListener('click', () => selectPlate(index)))
+  function showEdition(initialPlate = 0) {
+    const plates = editions.get(select.value)
+    const thumbnails = plates.map(({ file, title }) => {
+      const button = document.createElement('button')
+      button.type = 'button'
+      button.title = title
+      button.setAttribute('aria-label', title)
+      const thumbnail = new Image()
+      thumbnail.alt = ''
+      thumbnail.loading = 'lazy'
+      thumbnail.src = file
+      button.append(thumbnail)
+      return button
+    })
+
+    function showPlate(index) {
+      const { file, title, credit } = plates[index]
+      image.src = file
+      image.alt = title
+      image.hidden = false
+      caption.textContent = title
+      if (credit) {
+        const source = document.createElement('small')
+        source.textContent = credit
+        caption.append(source)
+      }
+      thumbnails.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)))
+    }
+
+    thumbnails.forEach((button, index) => button.addEventListener('click', () => showPlate(index)))
+    strip.replaceChildren(...thumbnails)
+    showPlate(Math.min(initialPlate, plates.length - 1))
+  }
+
+  select.selectedIndex = side === '右栏' && editions.size > 1 ? 1 : 0
+  select.addEventListener('change', () => showEdition())
   enlarge.addEventListener('click', () => {
     enlarged.src = image.src
     enlarged.alt = image.alt
     dialog.showModal()
   })
-  if (plates.length) {
-    selectPlate(0)
-  } else {
-    panel.querySelector('.empty-illustrations').hidden = false
-    enlarge.hidden = true
-    strip.hidden = true
-  }
+  showEdition(side === '右栏' && editions.size === 1 ? 1 : 0)
 }
 
 async function start() {
@@ -260,39 +280,50 @@ async function start() {
     article.dataset.size = event.target.value
   })
 
-  showIllustrations(story)
+  const illustrationEditions = getIllustrationEditions(story)
   const panes = document.querySelector('#reading-panes')
+  const leftIllustration = document.querySelector('#primary-illustration')
+  const rightIllustration = document.querySelector('#secondary-illustration')
+  const illustrationNote = document.querySelector('#illustration-note')
   const primary = document.querySelector('#primary-scan')
   const secondary = document.querySelector('#secondary-scan')
   const modeButtons = [...document.querySelectorAll('[data-mode][aria-pressed]')]
+  const defaultMode = 'illustrated-scan'
   const panelsByMode = {
-    parallel: ['illustrations', 'transcript'],
-    illustrations: ['illustrations'],
-    'illustrated-scan': ['illustrations', 'primary-scan'],
-    scan: ['primary-scan'],
+    'illustrated-scan': ['primary-illustration', 'primary-scan'],
+    illustrations: ['primary-illustration', 'secondary-illustration'],
     'scan-text': ['primary-scan', 'transcript'],
-    text: ['transcript'],
     editions: ['primary-scan', 'secondary-scan']
   }
-  document.querySelector('button[data-mode="editions"]').hidden = versions.length < 2
+  const editionsButton = document.querySelector('button[data-mode="editions"]')
+  editionsButton.disabled = versions.length < 2
+  if (editionsButton.disabled) editionsButton.title = '本篇目前只有一个正文影印刊本'
 
   function setMode(mode) {
     const visiblePanels = panelsByMode[mode]
     panes.dataset.mode = mode
     for (const panel of panes.children) panel.hidden = !visiblePanels.includes(panel.id)
+    illustrationNote.hidden = mode !== 'illustrations' || illustrationEditions.size !== 1
+    if (!leftIllustration.hidden && !leftIllustration.firstElementChild) {
+      createIllustrationPane(leftIllustration, illustrationEditions, '左栏')
+    }
+    if (!rightIllustration.hidden && !rightIllustration.firstElementChild) {
+      createIllustrationPane(rightIllustration, illustrationEditions, '右栏')
+    }
     if (!primary.hidden && !primary.firstElementChild) createScan(primary, versions, 0)
     if (!secondary.hidden && !secondary.firstElementChild) createScan(secondary, versions, 1)
     for (const choice of modeButtons) choice.setAttribute('aria-pressed', String(choice.dataset.mode === mode))
     for (const link of document.querySelectorAll('#story-list a')) {
       const target = new URL(link.href)
-      if (mode === 'parallel') target.searchParams.delete('view')
+      if (mode === defaultMode) target.searchParams.delete('view')
       else target.searchParams.set('view', mode)
       link.href = target.href
     }
   }
 
   const requested = new URL(location.href).searchParams.get('view')
-  const initialMode = modeButtons.some(button => !button.hidden && button.dataset.mode === requested) ? requested : 'parallel'
+  const requestedMode = ['scan', 'text'].includes(requested) ? 'scan-text' : requested
+  const initialMode = modeButtons.some(button => !button.disabled && button.dataset.mode === requestedMode) ? requestedMode : defaultMode
   roomStatus.textContent = ''
   panes.hidden = false
   setMode(initialMode)
@@ -301,7 +332,7 @@ async function start() {
       const mode = button.dataset.mode
       setMode(mode)
       const url = new URL(location.href)
-      if (mode === 'parallel') url.searchParams.delete('view')
+      if (mode === defaultMode) url.searchParams.delete('view')
       else url.searchParams.set('view', mode)
       history.replaceState(null, '', url)
     })

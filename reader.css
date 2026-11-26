@@ -76,9 +76,9 @@ h2 { font-size: 1rem; }
 .view-bar button[aria-pressed="true"] { background: var(--green); color: #fff; }
 #room-status { margin: 1rem; }
 #room-status:empty, .scan-status:empty { display: none; }
+.comparison-note { margin: 0; padding: .55rem .85rem; background: var(--paper); color: var(--muted); border-bottom: 1px solid var(--line); font-size: .875rem; }
 .reading-panes { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
-.reading-panes[data-mode="editions"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.reading-panes[data-mode="scan"], .reading-panes[data-mode="text"], .reading-panes[data-mode="illustrations"] { grid-template-columns: minmax(0, 1fr); }
+.reading-panes:is([data-mode="editions"], [data-mode="illustrations"]) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .reading-panes > div, .scan-pane, .transcript, .illustrations { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
 .scan-pane { flex: 1; }
 .pane-heading, .scan-toolbar {
@@ -93,6 +93,9 @@ h2 { font-size: 1rem; }
 }
 .pane-heading { justify-content: space-between; }
 .pane-heading label { display: flex; align-items: center; gap: .4rem; min-width: 0; }
+.illustration-edition { flex: 1; white-space: nowrap; }
+.illustration-edition select { width: 100%; min-width: 0; text-overflow: ellipsis; }
+.enlarge-illustration { white-space: nowrap; }
 .edition { min-width: 0; }
 .page-form { display: flex; align-items: center; gap: .28rem; white-space: nowrap; }
 .page-form input { width: 4.4rem; text-align: center; }
@@ -121,7 +124,7 @@ h2 { font-size: 1rem; }
 .illustration-dialog { max-width: 94vw; max-height: 94dvh; padding: 0; border: 1px solid var(--line); border-radius: .3rem; background: var(--paper); color: var(--ink); }
 .illustration-dialog::backdrop { background: #162521bb; }
 .illustration-dialog > img { display: block; max-width: 100%; max-height: 84dvh; margin: auto; object-fit: contain; }
-.reading-panes[data-mode="illustrated-scan"] #primary-scan, .transcript, #secondary-scan { border-inline-start: 1px solid var(--line); }
+.reading-panes > :not([hidden]) ~ :not([hidden]) { border-inline-start: 1px solid var(--line); }
 .transcript { background: var(--paper); }
 .transcript-scroll { flex: 1; overflow: auto; padding: 1.1rem clamp(1rem, 3vw, 3rem) 3rem; }
 #story-text { max-width: 42rem; margin-inline: auto; font: 1.125rem/1.95 "Songti SC", "Noto Serif CJK SC", "PingFang TC", SimSun, serif; overflow-wrap: anywhere; }
@@ -139,8 +142,8 @@ h2 { font-size: 1rem; }
   .masthead { grid-template-columns: 1fr 1fr; gap: .35rem; padding: .45rem .65rem .65rem; }
   .reading-title { grid-row: 2; grid-column: 1 / -1; }
   .brand { font-size: 1rem; }
-  .reading-panes, .reading-panes[data-mode="editions"] { grid-template-columns: minmax(0, 1fr); }
-  .reading-panes[data-mode="illustrated-scan"] #primary-scan, .transcript, #secondary-scan { border-inline-start: 0; border-top: 1px solid var(--line); }
+  .reading-panes, .reading-panes:is([data-mode="editions"], [data-mode="illustrations"]) { grid-template-columns: minmax(0, 1fr); }
+  .reading-panes > :not([hidden]) ~ :not([hidden]) { border-inline-start: 0; border-top: 1px solid var(--line); }
   .scan-stage { height: 58dvh; padding: .6rem; }
   .transcript-scroll { max-height: none; }
 }
