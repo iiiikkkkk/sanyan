@@ -16,7 +16,8 @@
       "credit": "National Archives of Japan",
       "notes": [
         "边界图像裁去相邻篇的半叶。"
-      ]
+      ],
+      "reuse_terms": "https://www.digital.archives.go.jp/secondary-use"
     },
     {
       "edition": "天许斋本",
@@ -52,7 +53,8 @@
       "credit": "National Archives of Japan",
       "notes": [
         "边界图像裁去相邻篇的半叶。"
-      ]
+      ],
+      "reuse_terms": "https://www.digital.archives.go.jp/secondary-use"
     },
     {
       "edition": "天许斋本",
@@ -234,7 +236,8 @@
       "credit": "National Archives of Japan",
       "notes": [
         "边界图像裁去相邻篇的半叶。"
-      ]
+      ],
+      "reuse_terms": "https://www.digital.archives.go.jp/secondary-use"
     }
   ],
   "x03": [
@@ -254,7 +257,8 @@
       "credit": "National Archives of Japan",
       "notes": [
         "边界图像裁去相邻篇的半叶。"
-      ]
+      ],
+      "reuse_terms": "https://www.digital.archives.go.jp/secondary-use"
     }
   ],
   "x08": [
@@ -274,7 +278,8 @@
       "credit": "National Archives of Japan",
       "notes": [
         "边界图像裁去相邻篇的半叶。"
-      ]
+      ],
+      "reuse_terms": "https://www.digital.archives.go.jp/secondary-use"
     }
   ],
   "x18": [
@@ -294,7 +299,8 @@
       "credit": "National Archives of Japan",
       "notes": [
         "边界图像裁去相邻篇的半叶。"
-      ]
+      ],
+      "reuse_terms": "https://www.digital.archives.go.jp/secondary-use"
     }
   ],
   "x36": [
@@ -312,7 +318,8 @@
       "pages": 36,
       "rights": "Public domain (Wikimedia Commons)",
       "credit": "National Archives of Japan",
-      "notes": []
+      "notes": [],
+      "reuse_terms": "https://www.digital.archives.go.jp/secondary-use"
     }
   ]
 }
