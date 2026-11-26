@@ -2,134 +2,225 @@ import { getDocument, GlobalWorkerOptions } from './vendor/pdfjs/pdf.min.mjs'
 
 GlobalWorkerOptions.workerSrc = new URL('./vendor/pdfjs/pdf.worker.min.mjs', import.meta.url).href
 
-function createPane(versions, selected) {
-  const pane = document.createElement('section')
-  pane.innerHTML = `<div class="pdf-controls">
-    <label>刊本 <select></select></label>
-    <button type="button" data-step="-1">上一页</button>
-    <label>页码 <input type="number" min="1" value="1"></label>
-    <output></output>
-    <button type="button" data-step="1">下一页</button>
-    <a target="_blank" rel="noopener">打开 PDF</a>
-  </div><p role="status"></p><canvas aria-label="影印页"></canvas>`
-  const select = pane.querySelector('select')
+function createScan(container, versions, selected) {
+  const pane = document.querySelector('#scan-pane').content.firstElementChild.cloneNode(true)
+  container.append(pane)
+  const select = pane.querySelector('.edition')
+  const zoom = pane.querySelector('.zoom')
+  const stage = pane.querySelector('.scan-stage')
+  const form = pane.querySelector('.page-form')
+  const input = form.querySelector('input')
+  const counter = form.querySelector('output')
+  const [previous, next] = pane.querySelectorAll('[data-step]')
+  const canvas = stage.querySelector('canvas')
+  const status = stage.querySelector('.scan-status')
+  const link = pane.querySelector('.pdf-link')
+
   versions.forEach(({ edition, file }) => select.add(new Option(edition, file)))
   select.selectedIndex = selected
-  const input = pane.querySelector('input')
-  const canvas = pane.querySelector('canvas')
-  const status = pane.querySelector('[role=status]')
-  const link = pane.querySelector('a')
-  const counter = pane.querySelector('output')
-  const [previous, next] = pane.querySelectorAll('button')
-  let loading, documentPdf, render
-  let version = 0
-  let pageRequest = 0
+  let loading
+  let pdf
+  let render
+  let frame
+  let requestId = 0
+  let versionId = 0
+  let pageNumber = 1
+  let lastWidth = 0
 
-  function controls() {
-    const page = Number(input.value)
-    input.disabled = !documentPdf
-    previous.disabled = !documentPdf || page <= 1
-    next.disabled = !documentPdf || page >= documentPdf.numPages
-    counter.value = documentPdf ? `/ ${documentPdf.numPages}` : ''
+  function updateControls() {
+    input.value = pageNumber
+    input.disabled = !pdf
+    zoom.disabled = !pdf
+    previous.disabled = !pdf || pageNumber <= 1
+    next.disabled = !pdf || pageNumber >= pdf.numPages
+    counter.value = pdf ? `/ ${pdf.numPages}` : ''
   }
 
-  async function showPage(number) {
-    if (!documentPdf) return
-    const request = ++pageRequest
-    input.value = Math.max(1, Math.min(documentPdf.numPages, number || 1))
-    controls()
+  function cancelRender() {
+    cancelAnimationFrame(frame)
     render?.cancel()
+    ++requestId
+  }
+
+  async function renderPage() {
+    if (!pdf || !stage.clientWidth) return
+    cancelRender()
+    const currentRequest = requestId
     try {
-      const page = await documentPdf.getPage(Number(input.value))
-      if (request !== pageRequest) return
-      const scale = Math.min(2.5, Math.max(1, (pane.clientWidth - 12) * devicePixelRatio / page.getViewport({ scale: 1 }).width))
+      const page = await pdf.getPage(pageNumber)
+      if (currentRequest !== requestId) return
+      const nativeWidth = page.getViewport({ scale: 1 }).width
+      const style = getComputedStyle(stage)
+      const padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight)
+      const available = Math.max(1, stage.clientWidth - padding)
+      const width = available * Number(zoom.value)
+      const scale = Math.min(width * devicePixelRatio, 3600) / nativeWidth
       const viewport = page.getViewport({ scale })
       const target = document.createElement('canvas')
       target.width = Math.ceil(viewport.width)
       target.height = Math.ceil(viewport.height)
       render = page.render({ canvasContext: target.getContext('2d'), viewport })
       await render.promise
-      if (request !== pageRequest) return
+      if (currentRequest !== requestId) return
       canvas.width = target.width
       canvas.height = target.height
+      canvas.style.width = `${width}px`
       canvas.getContext('2d').drawImage(target, 0, 0)
-      canvas.dataset.page = input.value
+      canvas.dataset.page = pageNumber
+      canvas.setAttribute('aria-label', `${select.selectedOptions[0].text}，第 ${pageNumber} 页`)
       canvas.hidden = false
       status.textContent = ''
     } catch (error) {
-      if (request === pageRequest && error.name !== 'RenderingCancelledException') status.textContent = '无法显示本页，可直接打开 PDF。'
+      if (currentRequest === requestId && error.name !== 'RenderingCancelledException') {
+        canvas.hidden = true
+        status.textContent = '无法显示这一页。可通过「打开 PDF」直接阅读。'
+      }
     }
+  }
+
+  function goTo(number) {
+    if (!pdf) return
+    const destination = Math.max(1, Math.min(pdf.numPages, Math.trunc(number) || 1))
+    if (destination === pageNumber) {
+      input.value = pageNumber
+      return
+    }
+    pageNumber = destination
+    stage.scrollTop = 0
+    updateControls()
+    renderPage()
   }
 
   async function openVersion() {
-    const request = ++version
-    ++pageRequest
-    render?.cancel()
+    const currentVersion = ++versionId
+    cancelRender()
     loading?.destroy().catch(() => {})
-    documentPdf = null
-    controls()
+    pdf = null
+    pageNumber = 1
+    delete canvas.dataset.page
     canvas.hidden = true
     status.textContent = '正在加载影印…'
     link.href = select.value
+    updateControls()
+    stage.scrollTop = 0
     try {
       loading = getDocument({ url: link.href })
-      const pdf = await loading.promise
-      if (request !== version) return
-      documentPdf = pdf
+      const nextPdf = await loading.promise
+      if (currentVersion !== versionId) return
+      pdf = nextPdf
       input.max = pdf.numPages
-      await showPage(1)
+      updateControls()
+      renderPage()
     } catch {
-      if (request === version) status.textContent = '无法加载影印，可直接打开 PDF。'
+      if (currentVersion === versionId) status.textContent = '无法加载影印。可通过「打开 PDF」直接阅读。'
     }
   }
 
+  const resize = new ResizeObserver(() => {
+    if (stage.clientWidth === lastWidth) return
+    lastWidth = stage.clientWidth
+    cancelAnimationFrame(frame)
+    frame = requestAnimationFrame(renderPage)
+  })
+  resize.observe(stage)
   select.addEventListener('change', openVersion)
-  input.addEventListener('change', () => showPage(Number(input.value)))
-  previous.addEventListener('click', () => showPage(Number(input.value) - 1))
-  next.addEventListener('click', () => showPage(Number(input.value) + 1))
-  return { pane, openVersion, close() {
-    ++version
-    ++pageRequest
-    render?.cancel()
-    loading?.destroy().catch(() => {})
-    documentPdf = null
-  } }
+  zoom.addEventListener('change', renderPage)
+  form.addEventListener('submit', event => {
+    event.preventDefault()
+    goTo(input.valueAsNumber)
+  })
+  input.addEventListener('change', () => goTo(input.valueAsNumber))
+  previous.addEventListener('click', () => goTo(pageNumber - 1))
+  next.addEventListener('click', () => goTo(pageNumber + 1))
+  stage.addEventListener('keydown', event => {
+    if (!pdf || !['ArrowLeft', 'ArrowRight'].includes(event.key) || event.altKey || event.shiftKey || event.ctrlKey || event.metaKey) return
+    event.preventDefault()
+    goTo(pageNumber + (event.key === 'ArrowRight' ? 1 : -1))
+  })
+  openVersion()
 }
 
-for (const reader of document.querySelectorAll('[data-facsimile]')) {
-  reader.addEventListener('toggle', async () => {
-    if (!reader.open || reader.querySelector('dialog')) return
-    const versions = JSON.parse(reader.dataset.facsimile)
-    const dialog = document.createElement('dialog')
-    dialog.className = 'facsimile-dialog'
-    dialog.innerHTML = '<div class="pdf-controls"><button type="button" data-close>关闭</button><label data-compare><input type="checkbox">双栏对照</label></div><div class="facsimile-panes"></div>'
-    reader.append(dialog)
-    const panes = dialog.querySelector('.facsimile-panes')
-    const compare = dialog.querySelector('[data-compare]')
-    compare.hidden = versions.length < 2
-    const checkbox = compare.querySelector('input')
-    const left = createPane(versions, 0)
-    panes.append(left.pane)
-    let right
-    checkbox.addEventListener('change', () => {
-      if (checkbox.checked) {
-        right = createPane(versions, 1)
-        panes.append(right.pane)
-        right.openVersion()
-      } else {
-        right.close()
-        right.pane.remove()
-        right = null
-      }
-    })
-    dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close())
-    dialog.addEventListener('close', () => {
-      left.close()
-      right?.close()
-      dialog.remove()
-      reader.open = false
-    })
-    dialog.showModal()
-    left.openVersion()
-  })
+async function getResource(path, format) {
+  const response = await fetch(path)
+  if (!response.ok) throw Error(`无法读取 ${path}`)
+  return response[format]()
 }
+
+function showContents(books, active) {
+  const nav = document.querySelector('#story-list')
+  for (const book of books) {
+    const group = document.createElement('section')
+    const heading = document.createElement('h2')
+    heading.textContent = book.querySelector('.cover').textContent.trim()
+    const list = document.createElement('ul')
+    for (const story of book.querySelectorAll(':scope > .story')) {
+      const item = document.createElement('li')
+      const link = document.createElement('a')
+      link.href = `read.html?story=${encodeURIComponent(story.id)}`
+      link.textContent = story.querySelector('summary').textContent.trim()
+      if (story === active) link.setAttribute('aria-current', 'page')
+      item.append(link)
+      list.append(item)
+    }
+    group.append(heading, list)
+    nav.append(group)
+  }
+  if (matchMedia('(max-width: 900px)').matches) document.querySelector('#contents').open = false
+}
+
+async function start() {
+  const [html, catalog] = await Promise.all([
+    getResource('index.html', 'text'),
+    getResource('facsimiles.json', 'json')
+  ])
+  const library = new DOMParser().parseFromString(html, 'text/html')
+  const id = new URLSearchParams(location.search).get('story') || Object.keys(catalog)[0]
+  const story = library.getElementById(id)
+  const roomStatus = document.querySelector('#room-status')
+  showContents(library.querySelectorAll('.book'), story)
+  const versions = Object.hasOwn(catalog, id) ? catalog[id] : []
+  if (!story?.matches('.story') || !versions.length) {
+    roomStatus.textContent = '找不到这个篇目。请在目录中选择一篇。'
+    document.querySelector('#contents').open = true
+    return
+  }
+  const title = story.querySelector('summary').textContent.trim()
+  document.title = `${title} · 三言图文数据库`
+  document.querySelector('#book-name').textContent = story.closest('.book').querySelector('.cover').textContent.trim()
+  document.querySelector('#story-title').textContent = title
+  document.querySelector('#story-link').href = `index.html#${encodeURIComponent(id)}`
+  const article = document.querySelector('#story-text')
+  for (const paragraph of story.querySelector('pre').textContent.trim().split(/\n\s*\n/)) {
+    const element = document.createElement('p')
+    element.textContent = paragraph
+    article.append(element)
+  }
+  document.querySelector('#text-size').addEventListener('change', event => {
+    article.dataset.size = event.target.value
+  })
+
+  const panes = document.querySelector('#reading-panes')
+  const primary = document.querySelector('#primary-scan')
+  const secondary = document.querySelector('#secondary-scan')
+  const transcript = document.querySelector('#transcript')
+  const modeButtons = document.querySelectorAll('[data-mode][aria-pressed]')
+  document.querySelector('button[data-mode="editions"]').hidden = versions.length < 2
+  for (const button of modeButtons) {
+    button.addEventListener('click', () => {
+      const mode = button.dataset.mode
+      panes.dataset.mode = mode
+      primary.hidden = mode === 'text'
+      secondary.hidden = mode !== 'editions'
+      transcript.hidden = mode === 'scan' || mode === 'editions'
+      if (mode === 'editions' && !secondary.firstElementChild) createScan(secondary, versions, 1)
+      for (const choice of modeButtons) choice.setAttribute('aria-pressed', String(choice === button))
+    })
+  }
+  roomStatus.textContent = ''
+  panes.hidden = false
+  createScan(primary, versions, 0)
+}
+
+start().catch(() => {
+  document.querySelector('#room-status').textContent = '暂时无法加载篇目。请刷新页面，或返回首页直接打开 PDF。'
+})

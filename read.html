@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>三言 · 正文阅读</title>
+  <link rel="stylesheet" href="reader.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="index.html">三言图文数据库</a>
+    <div class="reading-title">
+      <span id="book-name"></span>
+      <h1 id="story-title">正文阅读</h1>
+    </div>
+    <a class="story-link" id="story-link" href="index.html">篇目信息与插图</a>
+  </header>
+  <main class="reading-room">
+    <aside class="contents">
+      <details open id="contents">
+        <summary>篇目目录</summary>
+        <nav aria-label="篇目目录" id="story-list"></nav>
+      </details>
+    </aside>
+    <section class="workspace" aria-label="正文阅读区">
+      <div class="view-bar" role="group" aria-label="阅读方式">
+        <button type="button" data-mode="parallel" aria-pressed="true">图文对读</button>
+        <button type="button" data-mode="scan" aria-pressed="false">原书影印</button>
+        <button type="button" data-mode="text" aria-pressed="false">电子正文</button>
+        <button type="button" data-mode="editions" aria-pressed="false" hidden>刊本对照</button>
+      </div>
+      <p id="room-status" role="status">正在加载篇目…</p>
+      <div class="reading-panes" id="reading-panes" data-mode="parallel" hidden>
+        <div id="primary-scan"></div>
+        <div id="secondary-scan" hidden></div>
+        <section class="transcript" id="transcript" aria-labelledby="transcript-label">
+          <header class="pane-heading">
+            <h2 id="transcript-label">电子正文</h2>
+            <label>字号 <select id="text-size">
+              <option value="standard">标准</option>
+              <option value="large">大</option>
+              <option value="larger">特大</option>
+            </select></label>
+          </header>
+          <div class="transcript-scroll" tabindex="0" aria-label="电子正文滚动区">
+            <article id="story-text"></article>
+          </div>
+        </section>
+      </div>
+      <noscript><p>请返回篇目页，通过「正文影印」中的 PDF 链接直接阅读。</p></noscript>
+    </section>
+  </main>
+  <template id="scan-pane">
+    <section class="scan-pane">
+      <header class="pane-heading">
+        <label>刊本 <select class="edition"></select></label>
+        <a class="pdf-link" target="_blank" rel="noopener">打开 PDF</a>
+      </header>
+      <div class="scan-toolbar" role="group" aria-label="影印页操作">
+        <button type="button" data-step="-1">上一页</button>
+        <form class="page-form">
+          <label>第 <input aria-label="页码" type="number" min="1" step="1" value="1" required> 页</label>
+          <output></output>
+        </form>
+        <button type="button" data-step="1">下一页</button>
+        <label class="zoom-label">缩放 <select class="zoom">
+          <option value="1">适合宽度</option>
+          <option value="1.25">125%</option>
+          <option value="1.5">150%</option>
+          <option value="2">200%</option>
+        </select></label>
+      </div>
+      <div class="scan-stage" tabindex="0" aria-label="影印页，聚焦后可按左右方向键翻页">
+        <p class="scan-status" role="status"></p>
+        <canvas role="img" aria-label="原书影印" hidden></canvas>
+      </div>
+    </section>
+  </template>
+  <script type="module" src="reader.mjs"></script>
+</body>
+</html>
