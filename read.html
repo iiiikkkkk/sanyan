@@ -25,13 +25,30 @@
     <section class="workspace" aria-label="正文阅读区">
       <div class="view-bar" role="group" aria-label="阅读方式">
         <button type="button" data-mode="parallel" aria-pressed="true">图文对读</button>
+        <button type="button" data-mode="illustrations" aria-pressed="false">影印插图</button>
+        <button type="button" data-mode="illustrated-scan" aria-pressed="false">插图与影印</button>
         <button type="button" data-mode="scan" aria-pressed="false">原书影印</button>
+        <button type="button" data-mode="scan-text" aria-pressed="false">影印与正文</button>
         <button type="button" data-mode="text" aria-pressed="false">电子正文</button>
         <button type="button" data-mode="editions" aria-pressed="false" hidden>刊本对照</button>
       </div>
       <p id="room-status" role="status">正在加载篇目…</p>
       <div class="reading-panes" id="reading-panes" data-mode="parallel" hidden>
-        <div id="primary-scan"></div>
+        <section class="illustrations" id="illustrations" aria-labelledby="illustrations-label">
+          <header class="pane-heading">
+            <h2 id="illustrations-label">影印插图</h2>
+            <button id="enlarge-illustration" type="button">放大插图</button>
+          </header>
+          <div class="illustration-stage">
+            <figure>
+              <img id="current-illustration" alt="" decoding="async" hidden>
+              <figcaption aria-live="polite"></figcaption>
+            </figure>
+            <p class="empty-illustrations" hidden>这个篇目暂无可浏览的插图。</p>
+          </div>
+          <div class="illustration-strip" role="group" aria-label="选择插图"></div>
+        </section>
+        <div id="primary-scan" hidden></div>
         <div id="secondary-scan" hidden></div>
         <section class="transcript" id="transcript" aria-labelledby="transcript-label">
           <header class="pane-heading">
@@ -50,6 +67,13 @@
       <noscript><p>请返回篇目页，通过「正文影印」中的 PDF 链接直接阅读。</p></noscript>
     </section>
   </main>
+  <dialog class="illustration-dialog" aria-labelledby="illustration-dialog-label">
+    <header class="pane-heading">
+      <h2 id="illustration-dialog-label">影印插图</h2>
+      <form method="dialog"><button>关闭</button></form>
+    </header>
+    <img alt="">
+  </dialog>
   <template id="scan-pane">
     <section class="scan-pane">
       <header class="pane-heading">

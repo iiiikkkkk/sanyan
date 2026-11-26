@@ -168,6 +168,67 @@ function showContents(books, active) {
   if (matchMedia('(max-width: 900px)').matches) document.querySelector('#contents').open = false
 }
 
+function showIllustrations(story) {
+  const panel = document.querySelector('#illustrations')
+  const image = panel.querySelector('figure img')
+  const caption = panel.querySelector('figcaption')
+  const strip = panel.querySelector('.illustration-strip')
+  const enlarge = panel.querySelector('#enlarge-illustration')
+  const dialog = document.querySelector('.illustration-dialog')
+  const enlarged = dialog.querySelector('img')
+  const plates = [...story.querySelectorAll('.gallery .plate')].flatMap(plate => {
+    const picture = plate.querySelector('img')
+    const file = picture?.getAttribute('src')
+    if (!file || !/^plate-[a-f0-9]+\.jpg$/.test(file)) return []
+    return [{
+      file,
+      title: plate.querySelector('h3')?.textContent.trim() || picture.alt,
+      credit: plate.querySelector('small')?.textContent.trim()
+    }]
+  })
+  const thumbnails = plates.map(({ file, title }) => {
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.title = title
+    button.setAttribute('aria-label', title)
+    const thumbnail = new Image()
+    thumbnail.alt = ''
+    thumbnail.loading = 'lazy'
+    thumbnail.src = file
+    button.append(thumbnail)
+    strip.append(button)
+    return button
+  })
+
+  function selectPlate(index) {
+    const { file, title, credit } = plates[index]
+    image.src = file
+    image.alt = title
+    image.hidden = false
+    caption.textContent = title
+    if (credit) {
+      const source = document.createElement('small')
+      source.textContent = credit
+      caption.append(source)
+    }
+    thumbnails.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)))
+  }
+
+  thumbnails.forEach((button, index) => button.addEventListener('click', () => selectPlate(index)))
+  enlarge.addEventListener('click', () => {
+    enlarged.src = image.src
+    enlarged.alt = image.alt
+    dialog.showModal()
+  })
+  if (plates.length) {
+    selectPlate(0)
+  } else {
+    panel.querySelector('.empty-illustrations').hidden = false
+    enlarge.hidden = true
+    strip.hidden = true
+  }
+}
+
 async function start() {
   const [html, catalog] = await Promise.all([
     getResource('index.html', 'text'),
@@ -199,26 +260,52 @@ async function start() {
     article.dataset.size = event.target.value
   })
 
+  showIllustrations(story)
   const panes = document.querySelector('#reading-panes')
   const primary = document.querySelector('#primary-scan')
   const secondary = document.querySelector('#secondary-scan')
-  const transcript = document.querySelector('#transcript')
-  const modeButtons = document.querySelectorAll('[data-mode][aria-pressed]')
+  const modeButtons = [...document.querySelectorAll('[data-mode][aria-pressed]')]
+  const panelsByMode = {
+    parallel: ['illustrations', 'transcript'],
+    illustrations: ['illustrations'],
+    'illustrated-scan': ['illustrations', 'primary-scan'],
+    scan: ['primary-scan'],
+    'scan-text': ['primary-scan', 'transcript'],
+    text: ['transcript'],
+    editions: ['primary-scan', 'secondary-scan']
+  }
   document.querySelector('button[data-mode="editions"]').hidden = versions.length < 2
+
+  function setMode(mode) {
+    const visiblePanels = panelsByMode[mode]
+    panes.dataset.mode = mode
+    for (const panel of panes.children) panel.hidden = !visiblePanels.includes(panel.id)
+    if (!primary.hidden && !primary.firstElementChild) createScan(primary, versions, 0)
+    if (!secondary.hidden && !secondary.firstElementChild) createScan(secondary, versions, 1)
+    for (const choice of modeButtons) choice.setAttribute('aria-pressed', String(choice.dataset.mode === mode))
+    for (const link of document.querySelectorAll('#story-list a')) {
+      const target = new URL(link.href)
+      if (mode === 'parallel') target.searchParams.delete('view')
+      else target.searchParams.set('view', mode)
+      link.href = target.href
+    }
+  }
+
+  const requested = new URL(location.href).searchParams.get('view')
+  const initialMode = modeButtons.some(button => !button.hidden && button.dataset.mode === requested) ? requested : 'parallel'
+  roomStatus.textContent = ''
+  panes.hidden = false
+  setMode(initialMode)
   for (const button of modeButtons) {
     button.addEventListener('click', () => {
       const mode = button.dataset.mode
-      panes.dataset.mode = mode
-      primary.hidden = mode === 'text'
-      secondary.hidden = mode !== 'editions'
-      transcript.hidden = mode === 'scan' || mode === 'editions'
-      if (mode === 'editions' && !secondary.firstElementChild) createScan(secondary, versions, 1)
-      for (const choice of modeButtons) choice.setAttribute('aria-pressed', String(choice === button))
+      setMode(mode)
+      const url = new URL(location.href)
+      if (mode === 'parallel') url.searchParams.delete('view')
+      else url.searchParams.set('view', mode)
+      history.replaceState(null, '', url)
     })
   }
-  roomStatus.textContent = ''
-  panes.hidden = false
-  createScan(primary, versions, 0)
 }
 
 start().catch(() => {
